@@ -1,0 +1,106 @@
+import { ScrollView, TextEdit, Button } from "std-widgets.slint";
+import "../assets/fonts/JetBrainsMono-VariableFont_wght.ttf";
+
+component EditorWindow inherits Rectangle {
+    in-out property <string> file_path: "<path>";
+    in-out property <string> file_name: "<no file name>";
+    in-out property <string> file_contents: "";
+
+    in-out property <length> editor_font_size: 18px;
+    in-out property <int> num_of_lines: 0;
+
+    property <color> bckg_fname_fpath: #323232;
+
+    min-width: 960px;
+    min-height: 540px;
+    padding: 20px;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 10px;
+
+    VerticalLayout {
+        Rectangle {
+            max-height: 20px;
+            background: bckg_fname_fpath;
+
+            Text {
+                text: file_name;
+                font-size: 16px;
+            }
+        }
+
+        ScrollView {
+            vertical-stretch: 1;
+            horizontal-stretch: 1;
+            
+            viewport-height: parent.height + (editor_font_size * num_of_lines < parent.height ? 0 : editor_font_size * num_of_lines);
+            viewport-width: parent.width;
+
+            TextInput {    
+                text <=> file_contents;
+                color: #e9e9e9;
+                font-family: "JetBrains Mono";
+                font-size: editor_font_size;
+                wrap: word-wrap;
+                single-line: false;
+                padding: 20px;
+                selection-background-color: #ae0000;
+            }
+        }
+
+        Rectangle {
+            max-height: 20px;
+            background: bckg_fname_fpath;
+
+            Text {
+                text: file_path;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+export component Eden inherits Window {
+    title: version;
+    default-font-family: "JetBrains Mono";
+    default-font-weight: 300;
+    icon: @image-url("C:/dev/eden/eden/assets/icons/E.png");
+
+    property <color> background-color: #1e1e1ecd;
+    background: background-color;
+
+    min-width: 960px;
+    min-height: 540px;
+
+    in-out property <string> version;
+    in-out property <string> file_path;
+    in-out property <string> file_name;
+    in-out property <string> file_contents;
+
+    callback eventing();
+
+    VerticalLayout {
+        /*
+        Button {
+            text: "Button!";
+            clicked => {
+                root.eventing();
+            }
+        }
+        */
+
+        spacing: 20px;
+        HorizontalLayout {
+            spacing: 20px;
+
+            vertical-stretch: 1;
+            horizontal-stretch: 1;
+            EditorWindow {
+                file_path <=> file_path;
+                file_name <=> file_name;
+                file_contents <=> file_contents;
+            }
+            // EditorWindow {}
+        }
+    }
+}
