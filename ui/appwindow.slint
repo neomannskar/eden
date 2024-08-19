@@ -1,106 +1,143 @@
 import { ScrollView, TextEdit, Button } from "std-widgets.slint";
 import "../assets/fonts/JetBrainsMono-VariableFont_wght.ttf";
+import "../assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf";
 
 component EditorWindow inherits Rectangle {
+    in property <length> editor_font_size: 18px;
+
     in-out property <string> file_path: "<path>";
     in-out property <string> file_name: "<no file name>";
     in-out property <string> file_contents: "";
+    
+    in-out property <string> line_numeration: "1";
 
-    in-out property <length> editor_font_size: 18px;
     in-out property <int> num_of_lines: 0;
 
-    property <color> bckg_fname_fpath: #323232;
-
-    min-width: 960px;
-    min-height: 540px;
+    property <color> background_for_file_properties: #ff854c;
+    property <color> tazz_nose_color: #ef8f92;
+    
+    preferred-width: 960px;
+    preferred-height: 540px;
     padding: 20px;
-    border-width: 1px;
-    border-color: black;
-    border-radius: 10px;
-
+    
     VerticalLayout {
-        Rectangle {
-            max-height: 20px;
-            background: bckg_fname_fpath;
-
-            Text {
-                text: file_name;
-                font-size: 16px;
-            }
-        }
-
-        ScrollView {
-            vertical-stretch: 1;
-            horizontal-stretch: 1;
+        HorizontalLayout {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            alignment: center;
             
-            viewport-height: parent.height + (editor_font_size * num_of_lines < parent.height ? 0 : editor_font_size * num_of_lines);
-            viewport-width: parent.width;
-
-            TextInput {    
-                text <=> file_contents;
-                color: #e9e9e9;
-                font-family: "JetBrains Mono";
-                font-size: editor_font_size;
-                wrap: word-wrap;
-                single-line: false;
-                padding: 20px;
-                selection-background-color: #ae0000;
-            }
+            Rectangle {
+                height: 25px;
+                background: background_for_file_properties;
+                border-radius: 5px;
+                Text {
+                    text: file_name;
+                    color: #0f0f0f;
+                    font-size: 16px;
+                    font-italic: true;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            } 
         }
 
         Rectangle {
-            max-height: 20px;
-            background: bckg_fname_fpath;
-
-            Text {
-                text: file_path;
-                font-size: 16px;
+            // background: #d400d4;
+            ScrollView {
+                vertical-stretch: 1;
+                horizontal-stretch: 1;
+        
+                HorizontalLayout {
+                    height: parent.height;
+                    padding-left: 10px;
+        
+                    Text {
+                        text <=> line_numeration;
+                        color: background_for_file_properties; // #525252;
+                        horizontal-alignment: right;
+                        font-size: editor_font_size;
+                        height: parent.height;
+                    }
+                    
+                    spacing: 20px;
+        
+                    TextInput {
+                        text <=> file_contents;
+                        color: #e9e9e9;
+                        font-family: "JetBrains Mono";
+                        font-size: editor_font_size;
+                        wrap: word-wrap;
+                        single-line: false;
+                        padding: 20px;
+                        selection-background-color: tazz_nose_color;
+                    }
+        
+                    Rectangle {
+                        width: 20px;
+                    }
+                }
             }
+        }
+    
+        HorizontalLayout {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            alignment: center;
+            
+            Rectangle {
+                height: 25px;
+                background: background_for_file_properties;
+                border-radius: 5px;
+                
+                Text {
+                    text: file_path;
+                    color: #0f0f0f;
+                    font-size: 16px;
+                    font-italic: true;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
         }
     }
 }
 
-export component Eden inherits Window {
+export component Seth inherits Window {
+    icon: @image-url("../assets/icons/white-seth-s.png");
+    in property <string> version: "";
     title: version;
+    
+    in property <string> editor_font_family: "JetBrains Mono";
+    in property <length> editor_font_size: 18px;
+    in property <int>    editor_font_weight: 300;
+    in property <color>  editor_font_color: #e9e9e9;
+    in property <color>  editor_line_num_color: #525252;
+    in property <color>  background_color: #1e1e1ecd;
+
     default-font-family: "JetBrains Mono";
     default-font-weight: 300;
-    icon: @image-url("C:/dev/eden/eden/assets/icons/E.png");
 
-    property <color> background-color: #1e1e1ecd;
-    background: background-color;
-
-    min-width: 960px;
-    min-height: 540px;
-
-    in-out property <string> version;
+    background: background_color;
+    preferred-width: 960px;
+    preferred-height: 540px;
+    
     in-out property <string> file_path;
     in-out property <string> file_name;
     in-out property <string> file_contents;
 
-    callback eventing();
+    in-out property <string> line_numeration;
 
     VerticalLayout {
-        /*
-        Button {
-            text: "Button!";
-            clicked => {
-                root.eventing();
-            }
-        }
-        */
-
-        spacing: 20px;
-        HorizontalLayout {
-            spacing: 20px;
-
-            vertical-stretch: 1;
-            horizontal-stretch: 1;
-            EditorWindow {
-                file_path <=> file_path;
-                file_name <=> file_name;
-                file_contents <=> file_contents;
-            }
-            // EditorWindow {}
+        vertical-stretch: 1;
+        horizontal-stretch: 1;
+        EditorWindow {
+            file_path <=> file_path;
+            file_name <=> file_name;
+            file_contents <=> file_contents;
+            line_numeration <=> line_numeration;
         }
     }
 }
