@@ -1,6 +1,7 @@
 [package]
 name = "Seth"
 version = "0.1.0"
+authors = ["Neo Mannskär <neo.mannskar@gmail.com>"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -14,3 +15,30 @@ clap = "4.5.16"
 
 [build-dependencies]
 slint-build = "1.7.1"
+
+# Metadata for bundling the application
+[package.metadata.bundle]
+name = "Seth"  # Name of your application
+identifier = "com.neomannskar.seth"  # A unique identifier, typically in reverse domain name notation
+icon = ["./assets/icons/white-seth-s.png"]  # Path to your application's icon
+short_description = "Seth is a simple text-editor written in Rust and Slint."
+long_description = "Seth is a simple text-editor written in Rust and using Slint for its ui. The editor's development was a result of a seperate branch of the IDE Eden. Seth a Rust application developed by Neo Mannskär."
+
+# macOS specific settings
+[package.metadata.bundle.macos]
+frameworks = []  # Specify any additional macOS frameworks if needed
+minimum_system_version = "10.13"  # Set to the minimum macOS version you want to support (e.g., macOS High Sierra)
+bundle_version = "1.0"  # Version of the app bundle
+# You can also specify additional macOS-specific properties like Info.plist entries here
+
+# Windows specific settings
+[package.metadata.bundle.windows]
+# Specify an icon for Windows
+icon_path = "assets/icon.ico"  # Path to a Windows .ico file (ensure you convert your PNG to ICO format)
+# Add other Windows-specific settings as needed
+
+# Linux specific settings
+[package.metadata.bundle.linux]
+# You can specify additional Linux-specific settings here, like dependencies or target packages
+depends = ["libgtk-3-0", "libssl-dev"]  # Example of runtime dependencies that might be required on some distros
+icon = "assets/icon.png"  # Path to your PNG icon for Linux packages

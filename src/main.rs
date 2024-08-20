@@ -11,7 +11,7 @@ use slint::Color;
 
 slint::include_modules!();
 
-const VERSION: &str = "0.0.1";
+const VERSION: &str = "0.1.0";
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Config {
